@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Online Psicologia{% endblock %}</title>
+</head>
+<body>
+    <header>
+        <a href="/">
+            <img src="{{ url_for('static', filename='logo.png') }}" alt="Online Psicologia Logo" style="height: 60px;">
+        </a>
+        <nav>
+            <nav>
+                <a href="/">Home</a> |
+                <a href="/login">Login</a> |
+                <a href="/signup">Sign Up</a>
+            </nav>
+        </nav>
+    </header>
+
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <ul>
+            {% for category, message in messages %}
+                <li style="color: gray;">{{ message }}</li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+
+    <footer>
+        <p>&copy; 2025 Online Psicologia</p>
+    </footer>
+
+    {% if self.scripts %}
+        {% block scripts %}{% endblock %}
+    {% endif %}
+</body>
+</html>

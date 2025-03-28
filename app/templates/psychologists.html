@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block title %}Find a Psychologist{% endblock %}
+
+{% block content %}
+    <h2>Available Psychologists</h2>
+
+    {% for profile in profiles %}
+        <div style="border:1px solid #ccc; padding:10px; margin-bottom:10px;">
+            <h3>{{ profile.user.name }}</h3>
+            <p><strong>Specialization:</strong> {{ profile.specialization }}</p>
+            <p><strong>Experience:</strong> {{ profile.experience_years }} years</p>
+            <p><strong>Pricing:</strong> ${{ profile.pricing }}</p>
+            <p>{{ profile.bio }}</p>
+        </div>
+    {% endfor %}
+{% endblock %}

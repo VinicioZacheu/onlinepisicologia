@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %}Booking Requests{% endblock %}
+
+{% block content %}
+    <h2>📨 Pending Session Requests</h2>
+
+    {% if bookings %}
+        <ul>
+        {% for b in bookings %}
+            <li>
+                🧑‍💼 Client: {{ b.client.name }}<br>
+                📅 Time: {{ b.appointment_time.strftime("%d %b %Y, %H:%M") }}<br>
+                💰 Price: ${{ b.price or "N/A" }}<br>
+                🏷️ Promo: {{ b.discount_description or "None" }}<br>
+
+                <a href="{{ url_for('main.handle_booking', booking_id=b.id, action='accept') }}">✅ Accept</a> |
+                <a href="{{ url_for('main.handle_booking', booking_id=b.id, action='reject') }}">❌ Reject</a>
+            </li>
+            <hr>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>No pending requests.</p>
+    {% endif %}
+{% endblock %}

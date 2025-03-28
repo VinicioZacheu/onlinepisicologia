@@ -1,0 +1,14 @@
+onlinepisicologia/
+│
+├── app/
+│   ├── __init__.py        ✅
+│   ├── routes.py          ✅
+│   ├── models.py          ✅
+│   ├── forms.py           ✅
+│   ├── static/            ✅
+│   └── templates/         ✅ 
+│
+├── config.py              ✅
+├── run.py                 ✅
+├── .env                   ✅
+├── requirements.txt       ✅ 

@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block title %}Assign Task to {{ client.name }}{% endblock %}
+
+{% block content %}
+    <h2>📝 Assign Task to {{ client.name }}</h2>
+
+    <form method="POST">
+        {{ form.hidden_tag() }}
+
+        <p>{{ form.description.label }}<br>{{ form.description(rows=4) }}</p>
+
+        <p>{{ form.due_date.label }}<br>{{ form.due_date() }}</p>
+
+        <p>{{ form.score.label }}<br>{{ form.score() }}</p>
+
+        <p>{{ form.submit() }}</p>
+    </form>
+{% endblock %}
+

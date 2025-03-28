@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title %}Add Availability{% endblock %}
+
+{% block content %}
+    <h2>Add Availability</h2>
+
+    <form method="POST">
+        {{ form.hidden_tag() }}
+
+        <p>{{ form.date.label }}<br>{{ form.date() }}</p>
+
+        <h4>Available Time Slots:</h4>
+        {% for slot in form.slots %}
+            <p>{{ slot.time.label }}<br>{{ slot.time() }}</p>
+        {% endfor %}
+
+        <h4>Options:</h4>
+        <p>{{ form.add_another() }} {{ form.add_another.label }}</p>
+
+        <p>{{ form.submit() }}</p>
+    </form>
+{% endblock %}
