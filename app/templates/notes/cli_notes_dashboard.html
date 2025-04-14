@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>🧠 My Notes Dashboard</h2>
+
+    <hr>
+    <h4>Psychologist Notes</h4>
+    {% if psy_notes_dashboard %}
+        {% for note in psy_notes_dashboard %}
+            <div>
+                <p><strong>{{ note.created_at.strftime('%Y-%m-%d') }}</strong></p>
+                <p>{{ note.content | e | replace('\n', '<br>') | safe }}</p>
+                <hr>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>No notes from your psychologist yet.</p>
+    {% endif %}
+
+    <hr>
+    <h4>My Personal Notes</h4>
+    {% if psy_client_notes_history
+
+ %}
+        {% for note in psy_client_notes_history
+
+ %}
+            <div>
+                <p><strong>{{ note.created_at.strftime('%Y-%m-%d') }}</strong></p>
+                <p>{{ note.content | e | replace('\n', '<br>') | safe }}</p>
+                <a href="{{ url_for('notes.cli_edit_note', note_id=note.id) }}" class="btn btn-sm btn-primary">✏️ Edit</a>
+                <form action="{{ url_for('notes.cli_delete_note', note_id=note.id) }}" method="post" style="display:inline;">
+                    <button type="submit" class="btn btn-sm btn-danger">🗑️ Delete</button>
+                </form>
+                <hr>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>You haven’t written any personal notes yet.</p>
+    {% endif %}
+
+    <hr>
+    <h4>Write a New Note</h4>
+    <form method="post" action="{{ url_for('notes.cli_submit_note') }}">
+        <textarea name="content" rows="4" class="form-control" placeholder="How are you feeling today?" required></textarea>
+        <button type="submit" class="btn btn-primary mt-2">💾 Save Note</button>
+    </form>
+</div>
+{% endblock %}

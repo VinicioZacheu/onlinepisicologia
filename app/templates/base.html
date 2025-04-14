@@ -7,14 +7,26 @@
 <body>
     <header>
         <a href="/">
-            <img src="{{ url_for('static', filename='logo.png') }}" alt="Online Psicologia Logo" style="height: 60px;">
+            <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Online Psicologia Logo" style="height: 60px;">
         </a>
         <nav>
             <nav>
-                <a href="/">Home</a> |
                 <a href="/login">Login</a> |
                 <a href="/signup">Sign Up</a>
+            
+                {% if session['user_id'] %}
+                    {% set current_user = User.query.get(session['user_id']) %}
+            
+                    {% if current_user.role == 'client' %}
+                        | <a href="{{ url_for('profile.cli_profile_view') }}">👤 My Profile</a>
+                        | <a href="{{ url_for('dashboard.cli_dashboard') }}">📊 Dashboard</a>
+                    {% elif current_user.role == 'psychologist' %}
+                        | <a href="{{ url_for('profile.psy_profile_view') }}">👤 My Profile</a>
+                        | <a href="{{ url_for('dashboard.psy_dashboard') }}">📊 Dashboard</a>
+                    {% endif %}
+                {% endif %}
             </nav>
+            
         </nav>
     </header>
 

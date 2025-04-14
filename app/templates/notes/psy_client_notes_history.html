@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}Note History - {{ client.name }}{% endblock %}
+{% block content %}
+<h2>🧾 Notes for {{ client.name }}</h2>
+
+{% if notes %}
+    <ul>
+    {% for note in notes %}
+        <div class="note-box">
+            <p><strong>Date:</strong> {{ note.created_at.strftime('%Y-%m-%d') }}</p>
+            <p>{{ note.content | e | replace('\n', '<br>') | safe }}</p>
+        
+            <a href="{{ url_for('notes.psy_edit_note', note_id=note.id) }}" class="btn btn-sm btn-primary">✏️ Edit</a>
+            <form action="{{ url_for('notes.psy_delete_note', note_id=note.id) }}" method="post" style="display:inline;">
+                <button type="submit" class="btn btn-sm btn-danger">🗑️ Delete</button>
+            </form>
+            <hr>
+        </div> 
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No notes found for this client.</p>
+{% endif %}
+
+<a href="{{ url_for('notes.psy_notes_dashboard') }}" style="margin-top: 20px; display:inline-block;">🔙 Back to Notes Dashboard</a>
+{% endblock %}

@@ -1,7 +1,8 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, TextAreaField, DateField, IntegerField, SubmitField, SelectField, BooleanField
+from wtforms import StringField, PasswordField, TextAreaField, DateField, IntegerField, SubmitField, SelectField, BooleanField, DecimalField
 from wtforms.validators import DataRequired, Email, Optional, NumberRange
 from wtforms.fields import DateField, TimeField, FieldList, FormField
+from flask_wtf.file import FileField, FileAllowed
 
 class LoginForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email()])
@@ -32,8 +33,22 @@ class TaskForm(FlaskForm):
     submit = SubmitField('Assign Task')
 
 class CompleteTaskForm(FlaskForm):
+    task_photo = FileField('Photo', validators=[FileAllowed(['jpg', 'png', 'jpeg'], 'Images only!')])
     submit = SubmitField('✔️ Mark as Completed')
 
 class NoteForm(FlaskForm):
     content = TextAreaField('Note Content', validators=[DataRequired()])
     submit = SubmitField('Save Note')
+
+class PsyProfileForm(FlaskForm):
+    specialization = StringField("Specialization", validators=[DataRequired()])
+    bio = TextAreaField("Currículo / Bio", validators=[Optional()])
+    pricing = DecimalField("Price per Consultation (R$)", validators=[DataRequired(), NumberRange(min=0)], places=2)
+    experience_years = IntegerField("Years of Experience", validators=[Optional(), NumberRange(min=0)])
+    submit = SubmitField("💾 Save")
+
+class CliProfileForm(FlaskForm):
+    name = StringField("Full Name", validators=[DataRequired()])
+    birth_date = DateField("Date of Birth", format="%Y-%m-%d", validators=[Optional()])
+    bio = TextAreaField("Bio", validators=[Optional()])
+    submit = SubmitField("💾 Save")

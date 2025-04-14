@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+
+{% block title %}Client Notes - {{ user.name }}{% endblock %}
+
+{% block content %}
+<h2>📝 Client Notes for {{ user.name }}</h2>
+
+<h3>🟢 Active Clients (Last 60 Days)</h3>
+{% if active_clients %}
+    {% for entry in active_clients %}
+        {% set client = entry.client %}
+        {% set note = entry.latest_note %}
+        {% set last_session = entry.last_session %}
+        <div style="border: 1px solid #ccc; padding: 10px; margin-bottom: 15px; border-radius: 8px;">
+            <img src="{{ url_for('static', filename='default.png') }}" alt="Client Photo"
+                 style="height: 50px; float: left; margin-right: 10px; border-radius: 50%;">
+            <strong>{{ client.name }}</strong><br>
+            🗓️ Last Session:
+            {{ last_session.appointment_time.strftime('%d %b %Y') if last_session else 'N/A' }}
+            <br><br>
+            📊 Latest Note:
+            {% if note %}
+                {{ note.content }}
+            {% else %}
+                <em>No notes yet.</em>
+            {% endif %}
+            <br><br>
+            <a href="#" style="margin-right: 10px;">👁️ View Profile</a>
+            <a href="{{ url_for('notes.psy_add_note', client_id=client.id) }}"
+               style="background: #4CAF50; color: white; padding: 5px 10px; border-radius: 5px;">➕ Add Note</a>
+            <a href="{{ url_for('notes.psy_client_notes_history', client_id=client.id) }}" style="margin-left: 10px;">🧾 View All Notes</a>
+        </div>
+    {% endfor %}
+{% else %}
+    <p>No recent clients to show.</p>
+{% endif %}
+
+<hr>
+
+<h3>🔴 Inactive Clients</h3>
+{% if inactive_clients %}
+    {% for entry in inactive_clients %}
+        {% set client = entry.client %}
+        {% set note = entry.latest_note %}
+        {% set last_session = entry.last_session %}
+        <div style="border: 1px solid #eee; padding: 10px; margin-bottom: 15px; border-radius: 8px; background: #f9f9f9;">
+            <img src="{{ url_for('static', filename='default.png') }}" alt="Client Photo"
+                 style="height: 50px; float: left; margin-right: 10px; border-radius: 50%;">
+            <strong>{{ client.name }}</strong><br>
+            🗓️ Last Session:
+            {{ last_session.appointment_time.strftime('%d %b %Y') if last_session else 'N/A' }}
+            <br><br>
+            📊 Latest Note:
+            {% if note %}
+                {{ note.content }}
+            {% else %}
+                <em>No notes yet.</em>
+            {% endif %}
+            <br><br>
+            <a href="#" style="margin-right: 10px;">👁️ View Profile</a>
+            <a href="{{ url_for('notes.psy_add_note', client_id=client.id) }}"
+               style="background: #2196F3; color: white; padding: 8px 12px; border-radius: 5px; text-decoration: none;">
+                ➕ Add Note
+            </a>
+        </div>
+    {% endfor %}
+{% else %}
+    <p>No inactive clients to show.</p>
+{% endif %}
+{% endblock %}

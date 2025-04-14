@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+    <h2>🧍‍♀️ My Profile</h2>
+    <hr>
+
+    <h4>Personal Info</h4>
+    <p><strong>Name:</strong> {{ user.name }}</p>
+    <p><strong>Email:</strong> {{ user.email }}</p>
+    <p><strong>Birth Date:</strong> {{ user.birth_date or "Not set" }}</p>
+    <p><strong>Bio:</strong> {{ user.bio or "No biography yet." }}</p>
+
+    {% if user.profile_pic %}
+        <p><img src="{{ url_for('static', filename=user.profile_pic) }}" width="150"></p>
+    {% else %}
+        <p><em>No profile picture uploaded!</em></p>
+    {% endif %}
+
+    <a href="{{ url_for('profile.cli_profile_edit') }}" class="btn btn-outline-primary">✏️ Edit My Profile</a>
+
+    <hr>
+    <h4>Last Note</h4>
+    {% if last_note %}
+        <p>{{ last_note.content }}</p>
+        <p><small>{{ last_note.created_at.strftime('%Y-%m-%d') }}</small></p>
+    {% else %}
+        <p>No notes available.</p>
+    {% endif %}
+
+    <hr>
+    <h4>Last Task</h4>
+    {% if last_task %}
+        <p>{{ last_task.description }}</p>
+        <p>🧠 Score: <strong>{{ last_task.score or "Pending" }}</strong></p>
+        <p><small>{{ last_task.created_at.strftime('%Y-%m-%d') }}</small></p>
+    {% else %}
+        <p>No tasks yet.</p>
+    {% endif %}
+
+    <hr>
+    <h4>Consultations</h4>
+    <p><strong>Last:</strong>
+        {% if last_consult %}
+            {{ last_consult.appointment_time.strftime('%Y-%m-%d %H:%M') }}
+        {% else %}
+            No past consultations
+        {% endif %}
+    </p>
+    <p><strong>Next:</strong>
+        {% if next_consult %}
+            {{ next_consult.appointment_time.strftime('%Y-%m-%d %H:%M') }}
+        {% else %}
+            No upcoming consultations
+        {% endif %}
+    </p>
+</div>
+{% endblock %}

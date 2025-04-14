@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+    <h2>👤 Edit My Profile</h2>
+    <form method="POST" enctype="multipart/form-data" action="{{ url_for('profile.upload_profile_photo') }}">
+        {{ form.hidden_tag() }}
+    
+        <div class="form-group mb-3">
+            <label for="profile_photo">📷 Upload Profile Photo:</label>
+            <input type="file" id="profile_photo" name="profile_photo" accept="image/*" class="form-control">
+        </div>
+
+        <div class="form-group mb-3">
+            {{ form.name.label(for="name") }} {{ form.name(id="name", class="form-control") }}
+            {% if form.name.errors %}
+                <div class="text-danger">
+                    {{ form.name.errors[0] }}
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="form-group mb-3">
+            {{ form.birth_date.label(for="birth_date") }} {{ form.birth_date(id="birth_date", class="form-control") }}
+            {% if form.birth_date.errors %}
+                <div class="text-danger">
+                    {{ form.birth_date.errors[0] }}
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="form-group mb-3">
+            {{ form.bio.label(for="bio") }} {{ form.bio(id="bio", class="form-control", rows=4) }}
+            {% if form.bio.errors %}
+                <div class="text-danger">
+                    {{ form.bio.errors[0] }}
+                </div>
+            {% endif %}
+        </div>
+
+        {{ form.submit(class="btn btn-primary mt-3") }}
+        <a href="{{ url_for('profile.cli_profile_view') }}" class="btn btn-secondary mt-3">← Cancel</a>
+    </form>
+</div>
+{% endblock %}

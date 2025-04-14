@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Edit Note</h2>
+<form method="post">
+    <textarea name="content" rows="6" class="form-control">{{ note.content }}</textarea>
+    <br>
+    <button type="submit" class="btn btn-success">💾 Save Changes</button>
+    <a href="{{ url_for('notes.psy_client_notes_history
+
+', client_id=note.client_id) }}" class="btn btn-secondary">Cancel</a>
+</form>
+{% endblock %}

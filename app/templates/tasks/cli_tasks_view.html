@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block title %}📋 Minhas Tarefas{% endblock %}
+
+{% block content %}
+<h2>📋 Minhas Tarefas</h2>
+<hr>
+
+<div style="display: flex; gap: 30px;">
+    <div style="flex: 1;">
+        <h4>📌 Tarefas Pendentes</h4>
+        {% for task in tasks_to_complete %}
+            <div style="border: 1px solid #ccc; padding: 10px; margin-bottom: 15px;">
+                <p><strong>Descrição:</strong> {{ task.description }}</p>
+                <p><strong>Prazo:</strong> {{ task.due_date.strftime('%d %b %Y') }}</p>
+                <form method="POST" enctype="multipart/form-data" action="{{ url_for('tasks.cli_complete_task', task_id=task.id) }}">
+                    {{ complete_form.hidden_tag() }}
+                    <label for="task_photo_{{ task.id }}">📷 Enviar Foto:</label><br>
+                    <input type="file" name="task_photo" accept="image/*" id="task_photo_{{ task.id }}"><br><br>
+                    {{ complete_form.submit() }}
+                </form>                                
+            </div>
+        {% else %}
+            <p>Nenhuma tarefa pendente.</p>
+        {% endfor %}
+    </div>
+
+    <div style="flex: 1;">
+        <h4>✅ Tarefas Concluídas</h4>
+        {% for task in tasks_completed %}
+            <div style="border: 1px solid #ccc; padding: 10px; margin-bottom: 15px;">
+                <p><strong>Descrição:</strong> {{ task.description }}</p>
+                <p><strong>Finalizada em:</strong> {{ task.completed_at.strftime('%d %b %Y') }}</p>
+                {% if task.client_photo %}
+                    <img src="{{ url_for('static', filename='uploads/' ~ task.client_photo) }}" width="100">
+                {% else %}
+                    <p><em>📷 Sem foto enviada.</em></p>
+                {% endif %}
+            </div>
+        {% else %}
+            <p>Nenhuma tarefa concluída ainda.</p>
+        {% endfor %}
+    </div>
+
+    <div style="flex: 1;">
+        <h4>❌ Tarefas Incompletas</h4>
+        {% for task in tasks_expired %}
+            <div style="border: 1px solid #ccc; padding: 10px; margin-bottom: 15px;">
+                <p><strong>Descrição:</strong> {{ task.description }}</p>
+                <p><strong>Prazo expirado:</strong> {{ task.due_date.strftime('%d %b %Y') }}</p>
+                <p><em>Não concluída a tempo.</em></p>
+            </div>
+        {% else %}
+            <p>Sem tarefas vencidas.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

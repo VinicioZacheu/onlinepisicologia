@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+    <h2>🧠 Psychologist Profile</h2>
+    <hr>
+
+    {% if user.profile_pic %}
+        <p><img src="{{ url_for('static', filename=user.profile_pic) }}" width="150"></p>
+    {% else %}
+        <p><em>No profile picture uploaded!</em></p>
+    {% endif %}
+
+    <h4>{{ user.name }}</h4>
+    <p><strong>Age:</strong> {{ age or "Not specified" }}</p>
+    <p><strong>Specialization:</strong> {{ user.profile.specialization }}</p>
+    <p><strong>Currículo:</strong><br> {{ user.profile.bio or "No biography provided." }}</p>
+    <p><strong>Price per Consultation:</strong> {{ user.profile.pricing }} R$</p>
+
+    <hr>
+    <h4>📊 Stats</h4>
+
+    <form method="POST">
+        <p>
+            <strong>Total Clients:</strong> {{ total_clients }}
+            <input type="checkbox" name="show_clients" value="1"
+                {% if user.profile.show_clients %}checked{% endif %}>
+            Show Publicly
+        </p>
+        <p>
+            <strong>Total Consultations:</strong> {{ total_consults }}
+            <input type="checkbox" name="show_consultations" value="1"
+                {% if user.profile.show_consultations %}checked{% endif %}>
+            Show Publicly
+        </p>
+        <button type="submit" class="btn btn-sm btn-outline-success">💾 Save Visibility</button>
+        <a href="{{ url_for('profile.psy_profile_edit') }}" class="btn btn-outline-primary btn-sm">✏️ Edit My Profile</a>
+    </form>
+</div>
+{% endblock %}
+

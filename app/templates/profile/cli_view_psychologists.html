@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+    <h2>🧠 Discover Psychologists</h2>
+    {% for item in psychologists_data %}
+    {% set psy = item.psychologist %}
+    {% set profile = psy.profile %}
+    {% set slot = item.slot %}
+    <div style="margin-bottom: 25px; padding: 15px; border: 1px solid #ccc; border-radius: 6px;">
+        <div style="display: flex; align-items: center;">
+            {% if profile and profile.profile_pic %}
+                <img src="{{ url_for('static', filename=profile.profile_pic) }}" width="150" style="border-radius: 8px;">
+            {% else %}
+                <p><em>No profile photo available</em></p>
+            {% endif %}
+            <div>
+                {% if profile %}
+                    <p><strong>Specialization:</strong> {{ profile.specialization }}</p>
+                    <p><strong>Price:</strong> R$ {{ profile.pricing }}</p>
+                    <p><strong>Bio:</strong> {{ profile.bio[:100] }}...</p>
+                {% else %}
+                    <p><em>No profile info available</em></p>
+                {% endif %}
+                <h4>{{ psy.name }}</h4> 
+
+                {% if profile.show_clients %}
+                    <p><strong>Clients:</strong> {{ psy.consultations|map(attribute='client_id')|unique|list|length }}</p>
+                {% endif %}
+                {% if profile.show_consultations %}
+                    <p><strong>Consultations:</strong> {{ psy.consultations|length }}</p>
+                {% endif %}
+
+                <a href="{{ url_for('profile.cli_view_psychologist', psy_id=psy.id) }}" class="btn btn-sm btn-primary">📅 View Psycologist Profile </a>
+
+                {% if slot %}
+                    <a href="{{ url_for('booking.cli_request_booking', slot_id=slot.id) }}" class="btn btn-sm btn-success">📝 View Availability</a>
+                {% else %}
+                    <p style="color: gray;">No available slots</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endfor %}
+
+</div>
+{% endblock %}

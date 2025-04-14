@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block title %}Book a Session{% endblock %}
+
+{% block content %}
+    <h2>📅 Book a Session</h2>
+
+    {% if available_days %}
+        <ul>
+        {% for day in available_days %}
+            <li>
+                <strong>{{ day.date.strftime('%d %b %Y') }}</strong><br>
+                👨‍⚕️ {{ day.psychologist.name }}
+
+                <ul>
+                {% for slot in day.slots %}
+                    {% if not slot.is_booked and not slot.is_pending %}
+                        <li>
+                            {{ slot.time.strftime('%H:%M') }}
+                            <a href="{{ url_for('booking.cli_request_booking', slot_id=slot.id) }}">📝 Request Book</a>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+                </ul>
+            </li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>No available sessions at the moment.</p>
+    {% endif %}
+{% endblock %}
+
